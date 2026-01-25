@@ -3,240 +3,219 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    <div class="max-w-6xl mx-auto">
+<div class="max-w-7xl mx-auto space-y-10">
 
-        {{-- Cabeçalho da página --}}
-        <div class="mb-6 lg:mb-8">
-            <h1 class="text-lg lg:text-2xl font-medium mb-1 dark:text-[#EDEDEC]">
-                Olá, {{ Auth::user()->name }} 👋
-            </h1>
-            <p class="text-[13px] leading-[20px] text-[#706f6c] dark:text-[#A1A09A]">
-                Aqui está um resumo rápido do que está acontecendo na aplicação hoje.
-            </p>
-        </div>
-
-        {{-- Linha de listagem de usuários --}}
-        <div class="border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm bg-white dark:bg-[#161615] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] mb-8">
-            <div class="flex items-center justify-between px-4 lg:px-6 py-4 border-b border-[#e3e3e0] dark:border-[#3E3E3A]">
-                <h2 class="text-sm font-medium dark:text-[#EDEDEC]">
-                    Usuários cadastrados
-                </h2>
-
-                {{-- <a href="#"
-                class="text-[13px] px-3 py-1.5 border border-[#19140035] dark:border-[#3E3E3A]
-                        rounded-sm hover:bg-black hover:text-white dark:hover:bg-white
-                        dark:hover:text-[#1C1C1A] transition">
-                    + Novo usuário
-                </a> --}}
-            </div>
-
-            <table class="w-full text-left text-sm">
-                <thead class="bg-[#FDFDFC] dark:bg-[#0a0a0a] border-b border-[#e3e3e0] dark:border-[#3E3E3A]">
-                    <tr class="text-[13px] text-[#706f6c] dark:text-[#A1A09A]">
-                        <th class="py-3 px-4 lg:px-6">Nome</th>
-                        <th class="py-3 px-4 lg:px-6">E-mail</th>
-                        <th class="py-3 px-4 lg:px-6 w-32 text-center">Ações</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach ($users as $user)
-                        <tr class="border-b border-[#e3e3e0] dark:border-[#3E3E3A]">
-                            <td class="py-3 px-4 lg:px-6 dark:text-[#EDEDEC]">
-                                {{ $user->name }}
-                            </td>
-                            <td class="py-3 px-4 lg:px-6 text-[#706f6c] dark:text-[#A1A09A]">
-                                {{ $user->email }}
-                            </td>
-
-                            <td class="py-3 px-4 lg:px-6 flex items-center justify-center gap-2">
-
-                                {{-- Botão Editar -> abre modal --}}
-                                <button
-                                    type="button"
-                                    class="btn-open-edit-modal text-[13px] px-2 py-1 rounded-sm border border-[#19140035] dark:border-[#3E3E3A]
-                                        hover:bg-black hover:text-white dark:hover:bg-white
-                                        dark:hover:text-[#1C1C1A] transition"
-                                    data-id="{{ $user->id }}"
-                                    data-name="{{ $user->name }}"
-                                    data-email="{{ $user->email }}"
-                                >
-                                    Editar
-                                </button>
-
-                                {{-- Botão Excluir --}}
-                                <form action="{{ route('users.delete', $user->id) }}" method="POST"
-                                    onsubmit="return confirm('Tem certeza que deseja excluir este usuário?');">
-                                    @csrf
-                                    @method('DELETE')
-
-                                    <button type="submit"
-                                        class="text-[13px] px-2 py-1 rounded-sm border border-[#f53003] text-[#f53003]
-                                            hover:bg-[#f53003] hover:text-white
-                                            dark:border-[#FF4433] dark:text-[#FF4433]
-                                            dark:hover:bg-[#FF4433] dark:hover:text-white transition">
-                                        Excluir
-                                    </button>
-                                </form>
-
-                            </td>
-                        </tr>
-                    @endforeach
-
-                    @if ($users->isEmpty())
-                        <tr>
-                            <td colspan="3" class="py-6 px-4 lg:px-6 text-center text-[#706f6c] dark:text-[#A1A09A]">
-                                Nenhum usuário encontrado.
-                            </td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
-        </div>
+    {{-- HEADER --}}
+    <div>
+        <h1 class="text-xl lg:text-2xl font-semibold mb-1 dark:text-[#EDEDEC]">
+            Olá, {{ Auth::user()->name }} 👋
+        </h1>
+        <p class="text-sm text-[#706f6c] dark:text-[#A1A09A]">
+            Aqui está um resumo do sistema hoje.
+        </p>
     </div>
 
-    {{-- Modal de edição de usuário --}}
-    <div
-    id="editUserModal"
-    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40"
-    >
-    <div class="w-full max-w-md mx-4 bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm p-6 shadow-[0px_10px_25px_rgba(0,0,0,0.25)]">
-        <div class="flex items-start justify-between mb-4">
+    {{-- CARDS --}}
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+
+        <div class="rounded-xl border border-[#e3e3e0] dark:border-[#3E3E3A] bg-white dark:bg-[#161615] p-5 hover:shadow-md transition">
+            <p class="text-xs text-[#706f6c] dark:text-[#A1A09A]">Usuários</p>
+            <h2 class="mt-2 text-2xl font-semibold">{{ $users->count() }}</h2>
+        </div>
+
+        <div class="rounded-xl border border-[#e3e3e0] dark:border-[#3E3E3A] bg-white dark:bg-[#161615] p-5 hover:shadow-md transition">
+            <p class="text-xs text-[#706f6c] dark:text-[#A1A09A]">Ativos</p>
+            <h2 class="mt-2 text-2xl font-semibold">
+                {{ $users->whereNotNull('email')->count() }}
+            </h2>
+        </div>
+
+        <div class="rounded-xl border border-[#e3e3e0] dark:border-[#3E3E3A] bg-white dark:bg-[#161615] p-5 hover:shadow-md transition">
+            <p class="text-xs text-[#706f6c] dark:text-[#A1A09A]">Hoje</p>
+            <h2 class="mt-2 text-2xl font-semibold">{{ now()->format('d/m') }}</h2>
+        </div>
+
+        <div class="rounded-xl border border-[#e3e3e0] dark:border-[#3E3E3A] bg-white dark:bg-[#161615] p-5 hover:shadow-md transition">
+            <p class="text-xs text-[#706f6c] dark:text-[#A1A09A]">Sistema</p>
+            <h2 class="mt-2 text-2xl font-semibold">Online</h2>
+        </div>
+
+    </div>
+
+    {{-- TABELA --}}
+    <div class="rounded-xl border border-[#e3e3e0] dark:border-[#3E3E3A] bg-white dark:bg-[#161615] overflow-hidden">
+
+        <div class="flex items-center justify-between px-6 py-4 border-b border-[#e3e3e0] dark:border-[#3E3E3A]">
+            <h2 class="text-sm font-semibold dark:text-[#EDEDEC]">
+                Usuários cadastrados
+            </h2>
+        </div>
+
+        <table class="w-full text-sm">
+            <thead class="bg-[#f7f7f5] dark:bg-[#1C1C1A] text-[#706f6c] dark:text-[#A1A09A]">
+                <tr>
+                    <th class="text-left px-6 py-3 font-medium">Nome</th>
+                    <th class="text-left px-6 py-3 font-medium">E-mail</th>
+                    <th class="text-center px-6 py-3 font-medium w-40">Ações</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @forelse ($users as $user)
+                <tr class="border-t border-[#e3e3e0] dark:border-[#3E3E3A] hover:bg-[#f7f7f5] dark:hover:bg-[#1C1C1A] transition">
+                    <td class="px-6 py-3 dark:text-[#EDEDEC] font-medium">
+                        {{ $user->name }}
+                    </td>
+                    <td class="px-6 py-3 text-[#706f6c] dark:text-[#A1A09A]">
+                        {{ $user->email }}
+                    </td>
+                    <td class="px-6 py-3">
+                        <div class="flex items-center justify-center gap-2">
+
+                            <button
+                                type="button"
+                                class="btn-open-edit-modal px-3 py-1.5 rounded-md text-xs
+                                    border border-[#19140035] dark:border-[#3E3E3A]
+                                    hover:bg-black hover:text-white dark:hover:bg-white
+                                    dark:hover:text-[#1C1C1A] transition"
+                                data-id="{{ $user->id }}"
+                                data-name="{{ $user->name }}"
+                                data-email="{{ $user->email }}"
+                            >
+                                Editar
+                            </button>
+
+                            <form action="{{ route('users.delete', $user->id) }}" method="POST"
+                                  onsubmit="return confirm('Tem certeza que deseja excluir este usuário?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                    class="px-3 py-1.5 rounded-md text-xs
+                                        border border-red-500 text-red-500
+                                        hover:bg-red-500 hover:text-white transition">
+                                    Excluir
+                                </button>
+                            </form>
+
+                        </div>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="3" class="px-6 py-10 text-center text-[#706f6c] dark:text-[#A1A09A]">
+                        Nenhum usuário encontrado.
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{{-- MODAL --}}
+<div id="editUserModal"
+     class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm">
+
+    <div class="w-full max-w-md mx-4 bg-white dark:bg-[#161615]
+                border border-[#e3e3e0] dark:border-[#3E3E3A]
+                rounded-xl p-6 shadow-xl scale-95 opacity-0 transition-all duration-200"
+         id="modalBox">
+
+        <div class="flex justify-between items-start mb-4">
             <div>
-                <h2 class="text-sm font-medium dark:text-[#EDEDEC]">
-                    Editar usuário
-                </h2>
-                <p class="text-[13px] leading-[20px] text-[#706f6c] dark:text-[#A1A09A]">
-                    Atualize as informações do usuário selecionado.
+                <h2 class="text-sm font-semibold dark:text-[#EDEDEC]">Editar usuário</h2>
+                <p class="text-xs text-[#706f6c] dark:text-[#A1A09A]">
+                    Atualize os dados do usuário.
                 </p>
             </div>
-            <button
-                type="button"
-                id="closeEditModal"
-                class="text-[13px] px-2 py-1 rounded-sm border border-[#19140035] dark:border-[#3E3E3A]
-                    hover:bg-black text-white dark:hover:bg-white dark:hover:text-[#1C1C1A] transition"
-            >
-                Fechar
+            <button id="closeEditModal" class="text-sm px-2 py-1 border rounded-md hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition">
+                ✕
             </button>
         </div>
 
-        <form id="editUserForm" method="POST" action="">
+        <form id="editUserForm" method="POST">
             @csrf
             @method('PUT')
 
             <div class="mb-4">
-                <label for="editUserName" class="block text-[13px] mb-1 text-[#706f6c] dark:text-[#A1A09A]">
-                    Nome
-                </label>
-                <input
-                    type="text"
-                    name="name"
-                    id="editUserName"
-                    class="w-full text-sm px-3 py-2 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm
-                        bg-white dark:bg-[#0a0a0a] dark:text-[#EDEDEC]
-                        focus:outline-none focus:border-black dark:focus:border-white"
-                    required
-                >
+                <label class="text-xs text-[#706f6c] dark:text-[#A1A09A]">Nome</label>
+                <input id="editUserName" name="name" required
+                    class="w-full mt-1 px-3 py-2 text-sm rounded-md
+                           border border-[#e3e3e0] dark:border-[#3E3E3A]
+                           bg-white dark:bg-[#0a0a0a] dark:text-white
+                           focus:outline-none focus:ring-2 focus:ring-black/50 dark:focus:ring-white/50">
             </div>
 
-            <div class="mb-4">
-                <label for="editUserEmail" class="block text-[13px] mb-1 text-[#706f6c] dark:text-[#A1A09A]">
-                    E-mail
-                </label>
-                <input
-                    type="email"
-                    name="email"
-                    id="editUserEmail"
-                    class="w-full text-sm px-3 py-2 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm
-                        bg-white dark:bg-[#0a0a0a] dark:text-[#EDEDEC]
-                        focus:outline-none focus:border-black dark:focus:border-white"
-                    required
-                >
+            <div class="mb-6">
+                <label class="text-xs text-[#706f6c] dark:text-[#A1A09A]">E-mail</label>
+                <input id="editUserEmail" name="email" type="email" required
+                    class="w-full mt-1 px-3 py-2 text-sm rounded-md
+                           border border-[#e3e3e0] dark:border-[#3E3E3A]
+                           bg-white dark:bg-[#0a0a0a] dark:text-white
+                           focus:outline-none focus:ring-2 focus:ring-black/50 dark:focus:ring-white/50">
             </div>
 
-            {{-- Se tiver mais campos do usuário, adiciona aqui --}}
-
-            <div class="flex justify-end gap-2 mt-6">
-                <button
-                    type="button"
-                    id="cancelEditModal"
-                    class="text-[13px] px-3 py-1.5 rounded-sm border border-[#19140035] dark:border-[#3E3E3A]
-                        hover:bg-black text-white dark:hover:bg-white dark:hover:text-[#1C1C1A] transition"
-                >
+            <div class="flex justify-end gap-2">
+                <button type="button" id="cancelEditModal"
+                    class="px-4 py-2 text-xs border rounded-md hover:bg-gray-100 dark:hover:bg-[#1C1C1A] transition">
                     Cancelar
                 </button>
-
-                <button
-                    type="submit"
-                    class="text-[13px] px-3 py-1.5 rounded-sm border border-white
-                         text-black bg-white 
-                        hover:opacity-90 transition"
-                >
+                <button type="submit"
+                    class="px-4 py-2 text-xs rounded-md bg-black text-white dark:bg-white dark:text-black hover:opacity-90 transition">
                     Salvar
                 </button>
             </div>
         </form>
     </div>
-    </div>
+</div>
 
 @endsection
-
 @push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const baseUpdateUrl = "{{ url('/users') }}"; // monta /users/{id}
+document.addEventListener('DOMContentLoaded', () => {
 
-        const modal           = document.getElementById('editUserModal');
-        const form            = document.getElementById('editUserForm');
-        const inputName       = document.getElementById('editUserName');
-        const inputEmail      = document.getElementById('editUserEmail');
-        const closeBtn        = document.getElementById('closeEditModal');
-        const cancelBtn       = document.getElementById('cancelEditModal');
-        const editButtons     = document.querySelectorAll('.btn-open-edit-modal');
+    const baseUpdateUrl = "{{ url('/users') }}";
 
-        function openModal() {
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
+    const modal = document.getElementById('editUserModal');
+    const box   = document.getElementById('modalBox');
+    const form  = document.getElementById('editUserForm');
 
-        function closeModal() {
+    const inputName  = document.getElementById('editUserName');
+    const inputEmail = document.getElementById('editUserEmail');
+
+    function openModal() {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+
+        setTimeout(() => {
+            box.classList.remove('scale-95','opacity-0');
+            box.classList.add('scale-100','opacity-100');
+        }, 10);
+    }
+
+    function closeModal() {
+        box.classList.add('scale-95','opacity-0');
+        setTimeout(() => {
             modal.classList.add('hidden');
             modal.classList.remove('flex');
-        }
+        }, 150);
+    }
 
-        editButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const id    = btn.dataset.id;
-                const name  = btn.dataset.name;
-                const email = btn.dataset.email;
-
-                // Preenche os campos
-                inputName.value  = name;
-                inputEmail.value = email;
-
-                // Define a action do form: /users/{id}
-                form.action = `${baseUpdateUrl}/${id}`;
-
-                openModal();
-            });
-        });
-
-        closeBtn.addEventListener('click', closeModal);
-        cancelBtn.addEventListener('click', closeModal);
-
-        // Fecha ao clicar fora do conteúdo
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
-
-        // Fecha com ESC
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
+    document.querySelectorAll('.btn-open-edit-modal').forEach(btn => {
+        btn.addEventListener('click', () => {
+            form.action = `${baseUpdateUrl}/${btn.dataset.id}`;
+            inputName.value  = btn.dataset.name;
+            inputEmail.value = btn.dataset.email;
+            openModal();
         });
     });
+
+    document.getElementById('closeEditModal').onclick  = closeModal;
+    document.getElementById('cancelEditModal').onclick = closeModal;
+
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+});
 </script>
 @endpush
