@@ -75,7 +75,7 @@
                             <button
                                 type="button"
                                 class="btn-open-edit-modal px-3 py-1.5 rounded-md text-xs
-                                    border border-[#19140035] dark:border-[#3E3E3A]
+                                    border border-[#19140035] dark:border-[#3E3E3A] cursor-pointer
                                     hover:bg-black hover:text-white dark:hover:bg-white
                                     dark:hover:text-[#1C1C1A] transition"
                                 data-id="{{ $user->id }}"
@@ -90,7 +90,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"
-                                    class="px-3 py-1.5 rounded-md text-xs
+                                    class="px-3 py-1.5 rounded-md text-xs cursor-pointer
                                         border border-red-500 text-red-500
                                         hover:bg-red-500 hover:text-white transition">
                                     Excluir

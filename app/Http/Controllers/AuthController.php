@@ -48,6 +48,6 @@ class AuthController extends Controller
     {
         Auth::logout();
 
-        return redirect()->route('welcome');
+        return redirect()->route('home');
     }
 }
