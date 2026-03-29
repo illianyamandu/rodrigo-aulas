@@ -2,13 +2,20 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\EventsController;
 use App\Models\User;
+use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
+
+Route::get('/home', function () {
+    $events = Event::all();
+    return view('home', ['events' => $events]);
+})->name('home');
 
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterController::class, 'index'])->name('register.index');
@@ -26,6 +33,9 @@ Route::middleware('auth')->group(function () {
 
         return view('dashboard', ['users' => $users]);
     })->name('dashboard');
+
+    Route::get('/events', [EventsController::class,'index'])->name('events');
+    Route::post('/events', [EventsController::class,'store'])->name('events.store');
 
     Route::put('/users/{user}', function (Request $request, int $userId) {
         $user = User::query()->where('id', $userId)->first();
