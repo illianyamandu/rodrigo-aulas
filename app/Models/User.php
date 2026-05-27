@@ -6,11 +6,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -44,5 +45,30 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function getDocuments()
+    {
+        return $this->hasMany(Document::class)->get();
+    }
+
+    public function getAddress()
+    {
+        return $this->hasOne(Address::class)->first();
+    }
+
+    public function getPermissions()
+    {
+        return $this->belongsToMany(Permission::class, 'permission_user', 'user_id', 'permission_id')->get();
+    }
+
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class, 'permission_user', 'user_id', 'permission_id');
+    }
+
+    public function hasPermissionTo(string $permissionName): bool
+    {
+        return $this->permissions()->where('name', $permissionName)->exists();
     }
 }
