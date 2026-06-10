@@ -31,7 +31,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-    ];
+    ]; //define uma lista de campos que nunca devem ser incluídos quando o seu modelo for convertido para um array ou para JSON
 
     /**
      * Get the attributes that should be cast.
