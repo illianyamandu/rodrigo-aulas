@@ -18,8 +18,8 @@ return new class extends Migration
         });
 
         Schema::create('permission_user', function (Blueprint $table) {
-            $table->bigInteger('permission_id');
-            $table->bigInteger('user_id');
+            $table->unsignedBigInteger('permission_id');
+            $table->unsignedBigInteger('user_id');
 
             $table->foreign('permission_id')->references('id')->on('permissions');
             $table->foreign('user_id')->references('id')->on('users');

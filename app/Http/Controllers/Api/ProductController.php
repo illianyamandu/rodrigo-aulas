@@ -14,7 +14,7 @@ class ProductController extends Controller
         $permissions = $user->permissions()->get();
 
         $hasPermission = $permissions->where('name', 'list-products')->first();
-        if (! $hasPermission) {
+        if (!$hasPermission) {
             return response()->json(['error' => 'Acesso negado'], 403);
         }
 
@@ -27,5 +27,16 @@ class ProductController extends Controller
                 ['id' => 3, 'name' => 'Produto C', 'price' => 30.00],
             ],
         ]);
+    }
+    public function destroy(){
+        $user = Auth::guard('sanctum')->user();
+        $permissions = $user->permissions()->get();
+
+        $hasPermission = $permissions->where('name', 'delete-products')->first();
+        if (!$hasPermission) {
+            return response()->json(['error' => 'Acesso negado'], 403);
+        }
+
+        return response()->json(['message' => 'apagado com sucesso']);
     }
 }

@@ -42,5 +42,6 @@ Route::middleware([
 ])->group(function () {
     Route::prefix('/products')->group(function () {
         Route::get('/', [ProductController::class, 'index']);
+        Route::delete('/destroy', [ProductController::class, 'destroy']);
     });
 });
