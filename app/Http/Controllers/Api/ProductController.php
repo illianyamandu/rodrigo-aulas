@@ -3,22 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\PermissionName;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
 {
     public function index(Request $request)
     {
         $user = Auth::guard('sanctum')->user();
-        $permissions = $user->permissions()->get();
-
-        $hasPermission = $permissions->where('name', 'list-products')->first();
-        if (!$hasPermission) {
-            return response()->json(['error' => 'Acesso negado'], 403);
-        }
-
-        // UM MILHÃO DE COISAS AQUI PARA LISTAR PRODUTROS
+        Gate::forUser($user)->authorize(PermissionName::PRODUCTS_LIST->value);
 
         return response()->json([
             'products' => [
@@ -28,14 +23,11 @@ class ProductController extends Controller
             ],
         ]);
     }
-    public function destroy(){
-        $user = Auth::guard('sanctum')->user();
-        $permissions = $user->permissions()->get();
 
-        $hasPermission = $permissions->where('name', 'delete-products')->first();
-        if (!$hasPermission) {
-            return response()->json(['error' => 'Acesso negado'], 403);
-        }
+    public function destroy()
+    {
+        $user = Auth::guard('sanctum')->user();
+        Gate::forUser($user)->authorize(PermissionName::PRODUCTS_MANAGE->value);
 
         return response()->json(['message' => 'apagado com sucesso']);
     }

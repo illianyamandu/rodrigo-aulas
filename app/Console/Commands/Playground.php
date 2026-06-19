@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\PermissionName;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Auth;
 
 final class Playground extends Command
 {
@@ -28,10 +28,8 @@ final class Playground extends Command
      */
     public function handle()
     {
-        $usuarioLogado = Auth::user();
-
-        if ($usuarioLogado->hasPermissionTo('list-user')) {
-            // só entra quem pode listar usuários
-        }
+        dd(
+            PermissionName::cases(),
+        );
     }
 }

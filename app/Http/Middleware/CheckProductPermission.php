@@ -2,9 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use App\PermissionName;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckProductPermission
@@ -17,12 +19,7 @@ class CheckProductPermission
     public function handle(Request $request, Closure $next): Response
     {
         $user = Auth::guard('sanctum')->user();
-        $permission = $user->permissions()->get();
-
-        $hasPermission = $permission->where('name', 'manage-products')->first();
-        if (! $hasPermission) {
-            return response()->json(['error' => 'Você não tem acesso às rotas de produto'], 403);
-        }
+        Gate::forUser($user)->authorize(PermissionName::PRODUCTS_MANAGE->value);
 
         return $next($request);
     }

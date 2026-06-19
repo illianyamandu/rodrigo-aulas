@@ -23,6 +23,8 @@ return new class extends Migration
 
             $table->foreign('permission_id')->references('id')->on('permissions');
             $table->foreign('user_id')->references('id')->on('users');
+
+            $table->primary(['permission_id', 'user_id']);
         });
     }
 

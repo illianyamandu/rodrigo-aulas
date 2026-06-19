@@ -2,9 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\User;
+use App\PermissionName;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
-class AppServiceProvider extends ServiceProvider
+final class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
@@ -19,6 +22,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->defineGates();
+    }
+
+    private function defineGates(): void
+    {
+        $permissionNames = PermissionName::cases();
+        foreach ($permissionNames as $permissionName) {
+            Gate::define($permissionName->value, function (User $user) use ($permissionName) {
+                return $user->hasPermissionTo($permissionName->value);
+            });
+        }
     }
 }
