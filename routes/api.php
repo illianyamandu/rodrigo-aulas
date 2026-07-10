@@ -41,7 +41,8 @@ Route::middleware([
     CheckProductPermission::class,
 ])->group(function () {
     Route::prefix('/products')->group(function () {
-        Route::get('/', [ProductController::class, 'index']);
-        Route::delete('/destroy', [ProductController::class, 'destroy']);
+        Route::get('/', [ProductController::class, 'index'])->perimssion('products.list');
+        Route::post('/', [ProductController::class, 'store']);
+        Route::delete('/{id}', [ProductController::class, 'destroy'])->permission('products.delete');
     });
 });
